@@ -21,12 +21,14 @@ def simple_iteration_method(phi, dphi, x0, eps=DEFAULT_EPS, max_iter=MAX_ITERATI
     q0 = abs(dphi(x0))
     if q0 >= 1.0:
         raise ValueError(f"Метод итерации: условие |φ'(x)|<1 не выполняется в x0={x0}")
+    factor = q0 / (1.0 - q0)
     points = [x0]
     x = x0
     for _ in range(max_iter):
         x_new = phi(x)
         points.append(x_new)
-        if abs(x_new - x) < eps:
+        diff = abs(x_new - x)
+        if factor * diff <= eps:
             break
         x = x_new
     return points
